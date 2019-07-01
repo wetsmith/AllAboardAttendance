@@ -1,0 +1,13 @@
+In order to minimize merge conflicts and repository disorganization, please follow these guidelines:
+
+	1. When you take on a new task, create a new branch. Name the branch after the task number and sprint number. For instance, if you accepted Task 8 for Sprint 1, create a new branch titled "Task-8-Sprint-1." Do NOT name branches after yourself!
+
+	2. When you complete a task, merge your branch with master and resolve conflicts. THOROUGHLY DOCUMENT ALL CHANGES MADE IN RESOLVING MERGE CONFLICTS!
+
+	3. Create a PROGRESS file within your task branch, titled after your task and sprint. For instance, if your branch is "Task-8-Sprint-1," create a file titled "Task-8-Sprint-1-PROGRESS." In this file, note any obstacles you encounter, as well as assumptions you may have needed to make about the progress made in other tasks in order to finish the task. This should be a THOROUGH, ORGANIZED document. Make sure entries into this file are appropriately dated.
+
+	4. Do NOT merge temporarily completed tasks. A task should remain on its own branch until fully completed and tested in that branch.
+
+	5. After you merge a completed task, TEST for emergent bugs resulting from any changes you may have made in order to resolve merge conflicts. Throughoughly document any emergent bugs you noticed and how you resolved them.
+
+These guidelines are WIP and are subject to change.

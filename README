@@ -1,9 +1,31 @@
+TEAM MEMBERS:
 Matt Jacobs
 Trevor Weger
-Wesley Smith
+Wesley Smith (PO)
 Suleyman Saib
 Donghyun Kim
 
-CS 115 repo
-
+SCRUM Progress, Burndown Chart:
 https://docs.google.com/spreadsheets/d/12MuSUxdFPOvvFqxwLG5isuRCMR8EsLbJs3T2HyLbbq0/edit#gid=2104316230
+
+SCRUM Board:
+https://trello.com/b/3gWsBAES/all-aboard
+
+
+PROJECT OVERVIEW
+
+All Aboard Attendance is a new, efficient way of taking attendance. Instead of relying on roll call, sign-in sheets, or easily tricked login systems, All Aboard utilizes an insightful method to quickly take attendance and generate valuable data on student attendance trends.
+
+If you're a student, you'll scan a QR code projected by your professor. This will take you to a session-unique URL, where you'll be given a temporary ID (usually five characters long). From here, you'll be asked to enter the temporary ID of several nearby students, along with your general location in the room. If another student has entered your temporary ID, don't worry about entering theirs - that connection has been marked for both of you!
+
+If you're a professor, you'll be able to host unique attendance "sessions," which generally represent the attendance of a single lecture. In other words, if your course has thirty lectures throughout the term, you'll likely have thirty attendance sessions. Hosting a new attendance session will generate a QR code you should project for your students, as well as take you to a new page where you can end the current attendance session. When you end the session, the attendance data from the session will be stored, allowing you to accurately grade your students attendance.
+
+"What's so valuable about attendance data?"
+
+Some of you reading this may have noted a nuance to how attendance is marked in this system. In order to be marked present, each student must explicitly connect to another student (the temporary ID exchange step). A connection between two students represents a relative proximity between them, most of the time how close they are physically seated in class, but not necessarily - we'll get there.
+
+What this means is, each time we take attendance, we generate a network of which students are sitting close to each other. Over time, we can catalog this data and analyze recurrent student clusters. Do students flagged for plagiarism routinely log one another's ID during attendance? Does a struggling student not attend with a consistent cluster of other students? Does a particular student produce grade trends in students proximal to them during attendance?
+
+"What did you mean by that thing about proximity not necessarily being physical?""
+
+Look, this system is designed to strike a balance between efficiency, data collection, and accuracy. If a student texts another non-attendant student a session QR and their temporary ID, they can forge attendance. However, because of how we collect data, a valuable insight emerges in our graph: Students cheating the attendance mechanism will regularly log in with the same students. If these students engage in other academically dishonest behavior (for instance, they are flagged by a MOSS report), then their attendance networks can be correlated for a stronger case against their actions. In other words, if they're skipping class and lying about it, it'll be easier to catch them cheating in other capacities.
