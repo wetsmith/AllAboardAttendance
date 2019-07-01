@@ -10,4 +10,6 @@ In order to minimize merge conflicts and repository disorganization, please foll
 
 	5. After you merge a completed task, TEST for emergent bugs resulting from any changes you may have made in order to resolve merge conflicts. Throughoughly document any emergent bugs you noticed and how you resolved them.
 
+	6. MAKE SURE YOU'RE ON THE APPROPRIATE BRANCH WHEN YOU PUSH AND COMMIT!
+
 These guidelines are WIP and are subject to change.
