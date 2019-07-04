@@ -12,7 +12,7 @@ class Session(models.Model):
         return str(self.pub_date)
     
     
-class Attendent(models.Model):
+class Attendant(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     student_ID = models.CharField(max_length=20)
 	#position: front, middle, back 
@@ -26,11 +26,11 @@ class Attendent(models.Model):
         
         
 class DirEdge(models.Model):
-    attendent = models.ForeignKey(Attendent, on_delete=models.CASCADE)
+    attendant = models.ForeignKey(Attendant, on_delete=models.CASCADE)
     pub_date = models.DateTimeField('date connection made',default = timezone.now())
     directionID = models.CharField(max_length=20)
     def __str__(self): 
-        return self.attendent.student_ID + " -> " + self.directionID
+        return self.attendant.student_ID + " -> " + self.directionID
     #write function to update # of connections in attendent?
 
 """ If we want to save a list of students, we can, but Matt recommends we just query the data basestring
