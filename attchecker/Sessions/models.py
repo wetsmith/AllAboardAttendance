@@ -7,7 +7,7 @@ from django.utils import timezone
 
 class Session(models.Model):
     #question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField('date published', default = timezone.now())
     def __str__(self):
         return str(self.pub_date)
     
@@ -15,9 +15,11 @@ class Session(models.Model):
 class Attendent(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     student_ID = models.CharField(max_length=20)
+	#position: front, middle, back 
+    position = models.CharField(max_length=20, default = 'NA')
     #connection: >=2 present, <2 partial, -1 absent
     connections = models.IntegerField(default=-1)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField('date published', default = timezone.now())
     def __str__(self):
         return self.student_ID + ": " + str(self.connections)
     #function to add student ID to right list?
@@ -25,10 +27,10 @@ class Attendent(models.Model):
         
 class DirEdge(models.Model):
     attendent = models.ForeignKey(Attendent, on_delete=models.CASCADE)
-    pub_date = models.DateTimeField('date connection made')
+    pub_date = models.DateTimeField('date connection made',default = timezone.now())
     directionID = models.CharField(max_length=20)
-    def __str__(self): # need to check if this works
-        return self.attendent.student_ID + " to " + self.directionID
+    def __str__(self): 
+        return self.attendent.student_ID + " -> " + self.directionID
     #write function to update # of connections in attendent?
 
 """ If we want to save a list of students, we can, but Matt recommends we just query the data basestring
