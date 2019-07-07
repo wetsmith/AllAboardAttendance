@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Session(models.Model):
     session_title = models.CharField(max_length=20, default = 'default')
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField('date published', default = timezone.now())
 
     def __str__(self):
         return self.session_title + ": " + str(self.pub_date)
@@ -15,6 +15,7 @@ class Session(models.Model):
 class Attendant(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     student_id = models.CharField(max_length=20)
+    temp_id = models.CharField(max_length=20, default = "no code")
     position = models.CharField(max_length=20, default='N/A')
     connections = models.IntegerField(default=-1)
     pub_date = models.DateTimeField('date published', default = timezone.now())

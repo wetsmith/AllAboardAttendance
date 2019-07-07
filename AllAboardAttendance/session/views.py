@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+import string,random
 
 from .models import Session, Attendant, DirEdge
 
@@ -37,8 +38,8 @@ class ResultsView(generic.DetailView):
     template_name = 'session/results.html'
 
 
-def create_session(student_id_list = None):
-    s = Session()
+def create_session(student_id_list = None, name = 'default'):
+    s = Session(session_title = name)
     s.save()
 
     student_id_list = ["Trevor", "Wesley", "Matt"] # temporary until parameter functionality done
