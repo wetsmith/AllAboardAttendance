@@ -1,7 +1,0 @@
-<b>{{ session.session_title }}
-
-<ul>
-{% for attendant in session.attendant_set.all %}
-    <li>{{ attendant.student_id }} -- {{ attendant.connections }} connections</li>
-{% endfor %}
-</ul>

@@ -1,9 +1,0 @@
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-
-<form action="{% url 'session:identification' session.id %}" method="post">
-	{% csrf_token %}
-	<input type="text" name="identity" />
-	<label>identity</label><br />
-	<input type="submit" value="Submit" />
-</form>

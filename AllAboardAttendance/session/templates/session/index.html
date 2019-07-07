@@ -1,7 +1,0 @@
-{% load static %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'session/style.css' %}" />
-
-{% for session in object_list %}
-	<li><a href="{% url 'session:detail' session.id %}">{{ session.session_title }}</a></li>
-{% endfor %}
