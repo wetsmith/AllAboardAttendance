@@ -3,7 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-from .Lecture.models import Lecture
+from .lecture.models import Lecture
 
 
 class Course(models.Model):
