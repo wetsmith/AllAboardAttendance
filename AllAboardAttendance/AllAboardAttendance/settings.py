@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_89f2+m7e3zqs_ed@4x4(zhm5lztn6$u7w=9ck73@awh5@ku07'
+SECRET_KEY = 'y-m_y^a^m$=q)d9#ey^tbg96z0um_kjz8r(o%97*@hi0%wd1ub'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'lecture.apps.LectureConfig',
-    'course.apps.CourseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
