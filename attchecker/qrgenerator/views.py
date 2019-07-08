@@ -19,7 +19,10 @@ import random
 
 #have to add url fetching functionality(Getting url from somewhere else)
 chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
-url = "testabc"
+
+alphaNum = ''.join(random.choices(string.ascii_letters + string.digits, k=15))
+url = "http://127.0.0.1:8000/" + alphaNum
+
 qrname = ''.join(random.choice(chars) for _ in range(10))
 
 #generate qr code for it
