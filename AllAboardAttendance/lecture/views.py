@@ -38,11 +38,13 @@ class ResultsView(generic.DetailView):
     template_name = 'Lecture/results.html'
 
 
-def create_lecture(student_id_list = None, name = 'default'):
+	
+	
+def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'], name = 'default'):
     s = Lecture(lecture_title = name)
     s.save()
 
-    student_id_list = ["Trevor", "Wesley", "Matt"] # temporary until parameter functionality done
+    #student_id_list = ["Trevor", "Wesley", "Matt"] # temporary until parameter functionality done
     temp_id_list = make_id_list(len(student_id_list))
 
     for x in range(len(student_id_list)):
