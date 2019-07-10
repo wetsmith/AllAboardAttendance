@@ -1,0 +1,7 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'course/style.css' %}" />
+
+{% for course in object_list %}
+	<li><a href="{% url 'course:detail' course.course_title_slug) %}">{{ course.course_title }}</a></li>
+{% endfor %}
