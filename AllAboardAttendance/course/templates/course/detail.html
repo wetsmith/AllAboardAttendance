@@ -1,3 +1,5 @@
+<!-- simple list with hyperlinks to lectures. Not fully tested yet!-->
+
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'course/style.css' %}" />
@@ -5,3 +7,5 @@
 {% for lecture in object_list %}
 	<li><a href="{% url 'lecture:detail' lecture.id %}">{{ lecture.lecture_title }}</a></li>
 {% endfor %}
+
+<!-- to be implemented: "new lecture" button -->

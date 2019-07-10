@@ -25,33 +25,10 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
 	model = Course
 	template_name = 'course/detail.html'
-
-def get_queryset(self):
-    """
-    Excludes any courses that aren't published yet.
-    """
-    return Course.objects.filter(pub_date__lte=timezone.now())
-
-
-def get_queryset(self):
-	# returns the 10 most recent courses, can be expanded to all in future!
-	return Course.objects.filter(
-		pub_date__lte=timezone.now()
-	).order_by('-pub_date')[:10]
-
-
-# Converts a string into a slug for URL purposes.
-# IMPORTANT for cleaner URLs, and in future, obfuscated URLs! 
-#
-# So, instead of
-#	course/1/
-# we can do
-#	course/cs101-w19/
-# or
-#	course/1236sSSDvaskdaWE32S221s/
-def return_slug(any_string):
-	# get a slug of the string, generally a course_title. Uses django utility "slugify"
-	return slugify(unicode('%s' % any_string))
+	slug_field = 'course_title_slug'
+	slug_url_kwarg = 'course_title_slug'
+	def get_queryset(self):
+		return Course.objects.filter(pub_date__lte=timezone.now())
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
