@@ -17,6 +17,7 @@ from django.urls import include, path
 from django.contrib import admin
 
 urlpatterns = [
+	#namespace added to course but not to accounts. 
     path('course/', include('course.urls', namespace = 'course')),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),

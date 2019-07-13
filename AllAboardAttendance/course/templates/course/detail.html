@@ -10,7 +10,7 @@
 <button type = "submit" class = "btn btn-default" form = "open_lec">Add Lecture </button>
 	
 
-
+<!--This below code works when the button isnt implemented-->
 {% for lecture in course.lecture_set.all %}
 	<li>{{ lecture.lecture_title }}: {{lecture.pub_date}}</li>
 {% endfor %}
