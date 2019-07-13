@@ -6,15 +6,17 @@
 
 <h1> {{course.course_title}} <h1>
 
-<form action="% url 'course:open_lecture' course %" method = "post">
-	<button type = "button" class = "btn btn-default">Add Lecture </button>
-	<label for="your_name">Lecture Title: </label>
-    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
-    <input type="submit" value="Add Lecture">
-</form>
+<form action="{% url 'course:open_lecture' pk=course.pk %}" method = "POST" id = "open_lec"></form>
+<button type = "submit" class = "btn btn-default" form = "open_lec">Add Lecture </button>
+	
+
 
 {% for lecture in course.lecture_set.all %}
 	<li>{{ lecture.lecture_title }}: {{lecture.pub_date}}</li>
 {% endfor %}
+
+<label for="your_name">Lecture Title: </label>
+    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+    <input type="submit" value="Add Lecture">
 
 <!-- to be implemented: "new lecture" button -->

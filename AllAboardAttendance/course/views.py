@@ -38,7 +38,7 @@ class DetailView(generic.DetailView):
 #adds an instance of a lecture object to the course and fills it will all students in the course
 #returns the instance of the lecture so it can be easily used (ie attendence list checking)
 #Pre condition: course needs to be saved to the data base
-def open_lecture(course, lecture_name = "lecture"):
+def open_lecture(request,course, lecture_name = "lecture"):
 
 	student_ids = course.student_set.values_list('student_id', flat = True)
 	new_lecture = create_lecture(student_ids, lecture_name)
