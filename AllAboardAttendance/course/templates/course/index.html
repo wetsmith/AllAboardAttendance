@@ -6,5 +6,5 @@
 
 <!--Note: 'latest_course_list' is defined in the view. Same as object_list-->
 {% for course in latest_course_list %}
-	<li><a href="{% url 'course:detail' course.course_title %}">{{ course.course_title }}</a></li>
+	<li><a href="{% url 'course:detail' course.course_title_slug %}">{{ course.course_title }}</a></li>
 {% endfor %}

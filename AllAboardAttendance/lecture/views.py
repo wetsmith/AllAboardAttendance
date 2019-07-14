@@ -38,8 +38,6 @@ class ResultsView(generic.DetailView):
     template_name = 'Lecture/results.html'
 
 
-	
-	
 def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'], name = 'default'):
     s = Lecture(lecture_title = name)
     s.save()
@@ -66,6 +64,7 @@ def sign_in(lecture, identity):
     if(student.connections == -1):
         student.one_up()
         student.save()
+
 
 # precondition: first_id is the drain (static id of student receiving id)
 #               second_id is the source (temporary id of student giving id)
@@ -105,6 +104,7 @@ def make_id_list(class_size):
         temp_id.append(rand_id)
 
     return temp_id
+
 
 def identification(request, lecture_id): # will be replaced with a proper login page.
     lecture = get_object_or_404(Lecture, pk=lecture_id)

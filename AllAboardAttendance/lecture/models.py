@@ -2,12 +2,25 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class Lecture(models.Model):
 	lecture_title = models.CharField(max_length=20, default = 'default')
+	lecture_title_slug = models.SlugField(
+		max_length=20, 
+		null = True,
+		unique = True, 
+		editable = False)
 	pub_date = models.DateTimeField('date published', default = timezone.now())
 	course = models.ForeignKey('course.Course', on_delete=models.CASCADE, null = True)
+	
+	def save(self, *args, **kwargs):
+		if not self.id:
+		# Newly created object, so set slug.
+			self.lecture_title_slug = slugify(self.lecture_title)
+		super(Lecture, self).save(*args, **kwargs)
+
 	def __str__(self):
 		return self.lecture_title + ": " + str(self.pub_date)
 

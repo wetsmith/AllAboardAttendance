@@ -1,9 +1,21 @@
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<!-- simple list with hyperlinks to lectures. Not fully tested yet!-->
 
+{% load static %}
 
-<form action="{% url 'lecture:identification' lecture.id %}" method="post">
+<link rel="stylesheet" type="text/css" href="{% static 'course/style.css' %}" />
+
+<h1> {{course.course_title}} <h1>
+
+<form action="{% url 'course:open_lecture' course.id %}" method = "POST" >
 	{% csrf_token %}
-	<input type="text" name="identity" />
-	<label>identity</label><br />
-	<input type="submit" value="Submit" />
+	<input type = "hidden" name = "next" value = "{{ request.path }}">
+	<button type = "submit" class = "btn btn-default" >Add Lecture </button>
 </form>
+
+<!--This below code works when the button isnt implemented-->
+{% for lecture in course.lecture_set.all %}
+	<li><a href="{% url 'course:lectureinfo' lecture.lecture_title_slug %}">{{ lecture.lecture_title }}: {{lecture.pub_date}}</li>
+{% endfor %}
+
+
+<!-- to be implemented: "new lecture" button -->
