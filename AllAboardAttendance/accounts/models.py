@@ -6,6 +6,9 @@ from django.contrib.auth.models import AbstractUser #basic django user model
 
 class Teacher(AbstractUser):# overwrites the basic user model. 
     pass
+    
+    def __str__(self):
+        return self.email
     #we can add any extra feilds here
 
 #still working on this but should eventually makes creat user work for our Teacher usesr
