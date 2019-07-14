@@ -41,9 +41,9 @@ class DetailView(generic.DetailView):
 def open_lecture(request, course_id):
 
 	course = get_object_or_404(Course, pk=course_id)
-
+	lecture_title = request.POST.get('lecture_title')
 	student_ids = course.student_set.values_list('student_id', flat = True)
-	new_lecture = create_lecture(student_ids, "lecture")
+	new_lecture = create_lecture(student_ids, lecture_title)
 	course.lecture_set.add(new_lecture)
 	
 	next = request.POST.get('next', '/')
