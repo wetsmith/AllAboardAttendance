@@ -10,12 +10,14 @@
 	{% csrf_token %}
 	Lecture Title: <input type = "text" name = "lecture_title">
 	<input type = "hidden" name = "next" value = "{{ request.path }}">
-	<button type = "submit" class = "btn btn-default" > Add </button>
+	<button type = "submit" class = "btn btn-default" > Start New Lecture </button>
 </form>
 
 <!--This below code works when the button isnt implemented-->
 {% for lecture in course.lecture_set.all %}
-	<li>{{ lecture.lecture_title }}: {{lecture.pub_date}}</li>
+	
+	<li><a href="{% url 'course:info' lecture.lecture_title_slug %}">{{ lecture.lecture_title }}</a>, published {{ lecture.pub_date }}</li>
+
 {% endfor %}
 
 <!-- to be implemented: "new lecture" button -->

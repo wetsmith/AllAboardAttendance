@@ -8,6 +8,7 @@ from django.utils.text import slugify
 import string,random
 
 from lecture.views import create_lecture
+from lecture.models import Lecture, Attendant, DirEdge
 from .models import Course, Student
 
 
@@ -29,17 +30,14 @@ class DetailView(generic.DetailView):
 	slug_field = 'course_title_slug'
 	slug_url_kwarg = 'course_title_slug'
 	
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['student_list'] = Student.objects.all()
-		return context
 
 
-class LectureInfoView(generic.DetailView):
-	model = Course
+class InfoView(generic.DetailView):
+	model = Lecture
 	template_name = 'course/info.html'
 	slug_field = 'lecture_title_slug'
 	slug_url_kwarg = 'lecture_title_slug'
+
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
 #returns the instance of the lecture so it can be easily used (ie attendence list checking)
