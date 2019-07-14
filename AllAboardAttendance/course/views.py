@@ -17,6 +17,7 @@ class IndexView(generic.ListView):
 
 	def get_queryset(self):
 		# ten most recent courses, in future we should make this more flexible
+		
 		return Course.objects.filter(
 		    pub_date__lte=timezone.now()
 		).order_by('-pub_date')[:10]
@@ -27,16 +28,23 @@ class DetailView(generic.DetailView):
 	template_name = 'course/detail.html'
 	slug_field = 'course_title_slug'
 	slug_url_kwarg = 'course_title_slug'
-	def get_queryset(self):
-		return Course.objects.filter(pub_date__lte=timezone.now())
+	
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['student_list'] = Student.objects.all()
+		return context
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
 #returns the instance of the lecture so it can be easily used (ie attendence list checking)
 #Pre condition: course needs to be saved to the data base
-def open_lecture(course, lecture_name = "lecture"):
+def open_lecture(request, course_id):
+
+	course = get_object_or_404(Course, pk=course_id)
 
 	student_ids = course.student_set.values_list('student_id', flat = True)
-	new_lecture = create_lecture(student_ids, lecture_name)
+	new_lecture = create_lecture(student_ids, "lecture")
 	course.lecture_set.add(new_lecture)
-	return new_lecture
+	
+	next = request.POST.get('next', '/')
+	return HttpResponseRedirect(next)

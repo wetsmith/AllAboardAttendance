@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'course/style.css' %}" />
 
-{% for course in object_list %}
+<!--Note: 'latest_course_list' is defined in the view. Same as object_list-->
+{% for course in latest_course_list %}
 	<li><a href="{% url 'course:detail' course.course_title %}">{{ course.course_title }}</a></li>
 {% endfor %}
