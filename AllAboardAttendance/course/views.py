@@ -45,4 +45,6 @@ def open_lecture(request, course_id):
 	student_ids = course.student_set.values_list('student_id', flat = True)
 	new_lecture = create_lecture(student_ids, "lecture")
 	course.lecture_set.add(new_lecture)
-	return HttpResponseRedirect("")
+	
+	next = request.POST.get('next', '/')
+	return HttpResponseRedirect(next)

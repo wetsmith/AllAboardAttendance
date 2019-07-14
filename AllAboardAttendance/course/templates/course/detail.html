@@ -8,6 +8,7 @@
 
 <form action="{% url 'course:open_lecture' course.id %}" method = "POST" >
 	{% csrf_token %}
+	<input type = "hidden" name = "next" value = "{{ request.path }}">
 	<button type = "submit" class = "btn btn-default" >Add Lecture </button>
 </form>
 
