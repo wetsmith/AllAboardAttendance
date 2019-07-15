@@ -2,12 +2,16 @@
 <!-- Below has some hints about our task 6. -->
 <!-- if user is not logged in, only login/signup appears. -->
 {% block content %}
-<h1>home</h1>
+<h1>Home Page</h1>
 {% if user.is_authenticated %}
-Welcome, {{user.username}}.
+Welcome, {{user.username}}.<br>
+<!-- In this version, course templates does not exists, so below line should be modified later to courses web page-->
+<a href="/../lecture">Courses</a>
+<br>
 <a href="{% url 'logout' %}">log out</a>
 {% else %}
 <a href="{% url 'login' %}">log in</a>
+<br>
 <a href="{% url 'signup' %}">sign up</a>
 {% endif %}
 {% endblock %}

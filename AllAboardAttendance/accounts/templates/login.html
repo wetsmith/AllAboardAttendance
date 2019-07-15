@@ -4,6 +4,10 @@
 <div class="container">
     <h1>login</h1>
 
+    {% if error %}
+    <p>username of password incorrect</p>
+    {% endif %}
+
     <form method="POST" action="{%url 'login'%}">
         {% csrf_token %}
         Username:
@@ -14,7 +18,7 @@
         <br>
         <input name="password" type="password">
         <br><br>
-        <input type="submit" class="btn btn-primary" value="sign up">
+        <input type="submit" class="btn btn-primary" value="log in">
     </form>
 </div>
 {% endblock %}

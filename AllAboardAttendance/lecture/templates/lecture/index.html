@@ -2,6 +2,12 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'lecture/style.css' %}" />
 
+{% if user.is_authenticated %}
 {% for lecture in object_list %}
 	<li><a href="{% url 'lecture:detail' lecture.id %}">{{ lecture.lecture_title }}</a></li>
 {% endfor %}
+{% else %}
+	<p>Not authenticated</p>
+<br>
+<a href="/../">Log in</a>
+{% endif %}
