@@ -12,7 +12,6 @@ Home page(login, signup) ==> Course page(has list of Sessions) ==> Session page.
 '''
 
 urlpatterns = [
-    path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('', views.home, name='home'),
