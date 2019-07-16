@@ -12,6 +12,14 @@ class Lecture(models.Model):
 		null = True,
 		unique = True, 
 		editable = False)
+		
+	lecture_key = models.CharField(max_length=20, default = 'default')
+	lecture_key_slug = models.SlugField(
+		max_length=20, 
+		null = True,
+		unique = True, 
+		editable = False)
+	
 	pub_date = models.DateTimeField('date published', default = timezone.now())
 	course = models.ForeignKey('course.Course', on_delete=models.CASCADE, null = True)
 	
@@ -19,6 +27,7 @@ class Lecture(models.Model):
 		if not self.id:
 		# Newly created object, so set slug.
 			self.lecture_title_slug = slugify(self.lecture_title)
+			self.lecture_key_slug = slugify(self.lecture_key)
 		super(Lecture, self).save(*args, **kwargs)
 
 	def __str__(self):
