@@ -1,6 +1,7 @@
 {% load static %}
 
 <h1> {{lecture.lecture_title}} <h1>
+<h2> {{lecture.lecture_key_slug}}/sign-in/   </h2>
 
 {% for attendant in lecture.attendant_set.all %}
 	<li>{{ attendant.student_id }} ({{ attendant.temp_id}}), number of connections: {{ attendant.connections }}</li>
