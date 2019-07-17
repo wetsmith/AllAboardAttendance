@@ -41,8 +41,8 @@ class InfoView(generic.DetailView):
 class SignInView(generic.DetailView):
 	model = Lecture
 	template_name = 'course/signin.html'
-	slug_field = 'lecture_title_slug'
-	slug_url_kwarg = 'lecture_title_slug'
+	slug_field = 'lecture_key_slug'
+	slug_url_kwarg = 'lecture_key_slug'
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
