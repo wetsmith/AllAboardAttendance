@@ -3,7 +3,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-import string,random
+import string, random
+
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+import qrcode
 
 from .models import Lecture, Attendant, DirEdge
 
@@ -48,18 +53,17 @@ def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'
 			key = make_ran_url()
 		else:
 			checking = False
-	
-	
-	
+		
 	s = Lecture(lecture_title = name, lecture_key = key)
 	s.save()
 
+	make_lecture_qr(s)
+
 	#student_id_list = ["Trevor", "Wesley", "Matt"] # temporary until parameter functionality done
 	temp_id_list = make_id_list(len(student_id_list))
-
 	for x in range(len(student_id_list)):
 		s.attendant_set.create(student_id = student_id_list[x], temp_id = temp_id_list[x])
-	
+
 	return s
 
 
@@ -97,8 +101,10 @@ def add_edge(lecture, first_id, second_id):
 	else:
 		return "connection failed: connection already exists"
 
+
 def make_ran_url():
 	return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(10))
+
 
 def make_id_list(class_size):
 	temp_id = []
@@ -120,6 +126,7 @@ def make_id_list(class_size):
 	return temp_id
 
 
+
 def identification(request, lecture_id): # will be replaced with a proper login page.
 	lecture = get_object_or_404(Lecture, pk=lecture_id)
 	try:
@@ -139,3 +146,24 @@ def identification(request, lecture_id): # will be replaced with a proper login 
 		return HttpResponseRedirect(reverse('lecture:results', args=(lecture.id,))) # in future, redirect to edge submission page.
 
 
+def make_lecture_qr(lecture):
+	url = "http://127.0.0.1:8000/" + lecture.lecture_key_slug + "/sign-in/"
+	f = BytesIO()
+
+	#generate qr code for it
+	qr = qrcode.QRCode(
+		version=1,
+		error_correction=qrcode.constants.ERROR_CORRECT_L,
+		box_size=10,
+		border=4,
+	)
+	qr.add_data(url)
+	qr.make(fit=True)
+	#saves generated QR code into images directory
+	#can be modified like sending this image to somewhere else.
+	img = qr.make_image()
+	try:
+		img.save(f, format='png')
+		lecture.lecture_qr.save(lecture.lecture_title_slug, ContentFile(f.getvalue()))
+	finally:
+		f.close()
