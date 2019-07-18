@@ -43,27 +43,28 @@ class SignInView(generic.DetailView):
 	template_name = 'course/signin.html'
 	slug_field = 'lecture_key_slug'
 	slug_url_kwarg = 'lecture_key_slug'
-
+	
+	#captures form post and sends things via the request
 	def post(self, request, *args, **kwargs):
-		student_id = request.POST.get('student_id')
+		student__id = request.POST.get('student_id')
 		lecture_pk = request.POST.get('lecture.pk')
-		#self.object = self.get_object()
-		
-		#context = super().get_context_data(**kwargs)
-		#print(context)
-		print(lecture_pk)
-		print(self.model.pk)
+
 		lecture = Lecture.objects.get(pk = lecture_pk)
 		#checking if valid id entered  
-		if(student_id in lecture.attendant_set.values_list('student_id', flat=True)):
-			sign_in(lecture,student_id)
-			print("got here")
+		if(student__id in lecture.attendant_set.values_list('student_id', flat=True)):
+			sign_in(lecture,student__id)
+			student = lecture.attendant_set.get(student_id = student__id)
+			return render(request, 'course/addcode.html', {'lture':lecture, 'student':student}) #takes you to add code page
 			
 			
 		#I need to add some alert here to user but this redirects to form
 		return render(request, self.template_name, {'lecture':lecture})
 			
-			
+class AddCodeView(generic.DetailView):
+	model = Lecture
+	template_name = 'course/addcode.html'
+	slug_field = 'lecture_key_slug'
+	slug_url_kwarg = 'lecture_key_slug'
 			
 def sign_inTTT(request):
 	next = request.POST.get('next', '/')
