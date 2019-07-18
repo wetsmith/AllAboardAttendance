@@ -7,7 +7,7 @@ from django.utils.text import slugify
 
 import string,random
 
-from lecture.views import create_lecture
+from lecture.views import create_lecture, sign_in
 from lecture.models import Lecture, Attendant, DirEdge
 from .models import Course, Student
 
@@ -41,8 +41,33 @@ class InfoView(generic.DetailView):
 class SignInView(generic.DetailView):
 	model = Lecture
 	template_name = 'course/signin.html'
-	slug_field = 'lecture_title_slug'
-	slug_url_kwarg = 'lecture_title_slug'
+	slug_field = 'lecture_key_slug'
+	slug_url_kwarg = 'lecture_key_slug'
+
+	def post(self, request, *args, **kwargs):
+		student_id = request.POST.get('student_id')
+		lecture_pk = request.POST.get('lecture.pk')
+		#self.object = self.get_object()
+		
+		#context = super().get_context_data(**kwargs)
+		#print(context)
+		print(lecture_pk)
+		print(self.model.pk)
+		lecture = Lecture.objects.get(pk = lecture_pk)
+		#checking if valid id entered  
+		if(student_id in lecture.attendant_set.values_list('student_id', flat=True)):
+			sign_in(lecture,student_id)
+			print("got here")
+			
+			
+		#I need to add some alert here to user but this redirects to form
+		return render(request, self.template_name, {'lecture':lecture})
+			
+			
+			
+def sign_inTTT(request):
+	next = request.POST.get('next', '/')
+	return HttpResponseRedirect(next)
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course

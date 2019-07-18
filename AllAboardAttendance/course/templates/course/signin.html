@@ -6,8 +6,8 @@
 
 <form action="" method = "POST">
 	{% csrf_token %}
-	Cruz_ID: <input type = "text" name = "lecture_title">@ucsc.edu
+	Cruz_ID: <input type = "text" name = "student_id">@ucsc.edu
 	
-	<input type = "hidden" name = "next" value = "{{ request.path }}">
+	<input type = "hidden" name ="lecture.pk" value = "{{ lecture.pk }}">
 	<button type = "submit" class = "btn btn-default" > Sign-in </button>
 </form>
