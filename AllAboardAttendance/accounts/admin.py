@@ -12,4 +12,4 @@ class CustAdmin(UserAdmin):
     model = Teacher
     list_display = ['email', 'username',]
 
-admin.site.register(Teacher, CustAdmin)
+admin.site.register(Teacher)
