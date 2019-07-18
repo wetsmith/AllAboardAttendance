@@ -43,6 +43,7 @@ class SignInView(generic.DetailView):
 	template_name = 'course/signin.html'
 	slug_field = 'lecture_key_slug'
 	slug_url_kwarg = 'lecture_key_slug'
+
 	
 	#captures form post and sends things via the request
 	def post(self, request, *args, **kwargs):
@@ -69,6 +70,7 @@ class AddCodeView(generic.DetailView):
 def sign_inTTT(request):
 	next = request.POST.get('next', '/')
 	return HttpResponseRedirect(next)
+
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
