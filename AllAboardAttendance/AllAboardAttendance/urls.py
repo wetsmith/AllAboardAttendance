@@ -28,6 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
 ]
-
+# this is necessary to serve the contents of the /media/ folder
 if settings.DEBUG is True:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

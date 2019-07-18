@@ -146,7 +146,9 @@ def identification(request, lecture_id): # will be replaced with a proper login 
 		return HttpResponseRedirect(reverse('lecture:results', args=(lecture.id,))) # in future, redirect to edge submission page.
 
 
+# because QR codes are PIL images, they are saved twice. I haven't figured out a workaround.
 def make_lecture_qr(lecture):
+	# this is the URL I presumed holds the signin page for a lecture. Could be fixed down the line!
 	url = "http://127.0.0.1:8000/" + lecture.lecture_key_slug + "/sign-in/"
 	f = BytesIO()
 
@@ -162,6 +164,7 @@ def make_lecture_qr(lecture):
 	#saves generated QR code into images directory
 	#can be modified like sending this image to somewhere else.
 	img = qr.make_image()
+	# this converts the PIL image into an image compatible with the ImageField in the DJango model.
 	try:
 		img.save(f, format='png')
 		lecture.lecture_qr.save(lecture.lecture_title_slug, ContentFile(f.getvalue()))

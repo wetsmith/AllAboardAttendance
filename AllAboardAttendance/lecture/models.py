@@ -1,13 +1,10 @@
 import datetime
 
-from PIL import Image
-from io import BytesIO
-from django.core.files.base import ContentFile
 
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-import qrcode
+
 
 class Lecture(models.Model):
 	lecture_title = models.CharField(max_length=20, default = 'default')
@@ -33,8 +30,6 @@ class Lecture(models.Model):
 		# Newly created object, so set slug.
 			self.lecture_title_slug = slugify(self.lecture_title)
 			self.lecture_key_slug = slugify(self.lecture_key)
-		# shortcut to lecture QR path
-		# save a qr code to the image field
 		super(Lecture, self).save(*args, **kwargs)
 
 	def __str__(self):
