@@ -149,7 +149,7 @@ def identification(request, lecture_id): # will be replaced with a proper login 
 # because QR codes are PIL images, they are saved twice. I haven't figured out a workaround.
 def make_lecture_qr(lecture):
 	# this is the URL I presumed holds the signin page for a lecture. Could be fixed down the line!
-	url = "http://127.0.0.1:8000/" + lecture.lecture_key_slug + "/sign-in/"
+	url = "http://127.0.0.1:8000/course/" + lecture.lecture_key_slug + "/sign-in/"
 	f = BytesIO()
 
 	#generate qr code for it
