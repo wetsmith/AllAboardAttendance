@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
@@ -7,7 +7,7 @@ from django.utils.text import slugify
 
 import string,random
 
-from lecture.views import create_lecture, sign_in
+from lecture.views import create_lecture, sign_in, add_edge
 from lecture.models import Lecture, Attendant, DirEdge
 from .models import Course, Student
 
@@ -55,7 +55,7 @@ class SignInView(generic.DetailView):
 		if(student__id in lecture.attendant_set.values_list('student_id', flat=True)):
 			sign_in(lecture,student__id)
 			student = lecture.attendant_set.get(student_id = student__id)
-			return render(request, 'course/addcode.html', {'lture':lecture, 'student':student}) #takes you to add code page
+			return redirect('course:add_codes' , lecture.lecture_key_slug)
 			
 			
 		#I need to add some alert here to user but this redirects to form
@@ -66,10 +66,21 @@ class AddCodeView(generic.DetailView):
 	template_name = 'course/addcode.html'
 	slug_field = 'lecture_key_slug'
 	slug_url_kwarg = 'lecture_key_slug'
+	
+	def post(self, request, *args, **kwargs):
+		student_code = request.POST.get('code')
+		#lecture_pk = request.POST.get('lecture.pk')
+		
+		#lecture = Lecture.objects.get(pk = lecture_pk)
+		#checking if valid id entered  
+		'''if(student__id in lecture.attendant_set.values_list('student_id', flat=True)):
+		sign_in(lecture,student__id)
+		student = lecture.attendant_set.get(student_id = student__id)
+		return render(request, 'course/addcode.html', {'lture':lecture, 'student':student}) #takes you to add code page'''
 			
-def sign_inTTT(request):
-	next = request.POST.get('next', '/')
-	return HttpResponseRedirect(next)
+			
+		#I need to add some alert here to user but this redirects to form
+		return render(request, self.template_name)
 
 
 
