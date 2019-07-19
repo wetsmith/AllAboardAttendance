@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CreationForm, ChangeForm
-from .models import Teacher
+from .models import Teacher, CourseList
 
 #updates our changes for admin to use
 class CustAdmin(UserAdmin):
@@ -13,3 +13,4 @@ class CustAdmin(UserAdmin):
     list_display = ['email', 'username',]
 
 admin.site.register(Teacher)
+admin.site.register(CourseList)
