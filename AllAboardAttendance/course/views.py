@@ -31,12 +31,12 @@ class DetailView(generic.DetailView):
 	slug_url_kwarg = 'course_title_slug'
 	
 
-
 class InfoView(generic.DetailView):
 	model = Lecture
 	template_name = 'course/info.html'
 	slug_field = 'lecture_title_slug'
 	slug_url_kwarg = 'lecture_title_slug'
+
 	
 class SignInView(generic.DetailView):
 	model = Lecture
