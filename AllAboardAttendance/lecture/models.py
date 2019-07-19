@@ -43,6 +43,18 @@ class Attendant(models.Model):
 	position = models.CharField(max_length=20, default='N/A')
 	connections = models.IntegerField(default=-1)
 	pub_date = models.DateTimeField('date published', default = timezone.now())
+	
+	attendant_key_slug = models.SlugField(
+		max_length=20, 
+		null = True,
+		unique = True, 
+		editable = False)
+		
+	def save(self, *args, **kwargs):
+		if not self.id:
+		# Newly created object, so set slug.
+			self.attendant_key_slug = slugify(self.temp_id)
+		super(Attendant, self).save(*args, **kwargs)
 
 	def one_up(self):
 		self.connections = self.connections + 1

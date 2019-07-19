@@ -55,32 +55,61 @@ class SignInView(generic.DetailView):
 		if(student__id in lecture.attendant_set.values_list('student_id', flat=True)):
 			sign_in(lecture,student__id)
 			student = lecture.attendant_set.get(student_id = student__id)
-			return redirect('course:add_codes' , lecture.lecture_key_slug)
+			return redirect('course:add_codes' , lecture.lecture_key_slug, student.attendant_key_slug)
 			
 			
 		#I need to add some alert here to user but this redirects to form
 		return render(request, self.template_name, {'lecture':lecture})
 			
 class AddCodeView(generic.DetailView):
-	model = Lecture
+	model = Attendant
 	template_name = 'course/addcode.html'
-	slug_field = 'lecture_key_slug'
-	slug_url_kwarg = 'lecture_key_slug'
+	slug_field = 'attendant_key_slug'
+	slug_url_kwarg = 'attendant_key_slug'
+	
+	'''context = self.get_context_data(**kwargs)
+	attendant = context['attendant']
+	lecture = attendant.lecture'''
+	
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		print('got here')
+		print()
+		print(context)
+		print()
+		print(context['object'].lecture)
+		context['lecture'] = context['object'].lecture
+		return context
 	
 	def post(self, request, *args, **kwargs):
 		student_code = request.POST.get('code')
-		#lecture_pk = request.POST.get('lecture.pk')
+		attendant_pk = request.POST.get('attendant.pk')
+		attendant = Attendant.objects.get(pk=attendant_pk)
+		lecture = attendant.lecture
+		print(lecture.lecture_title)
 		
-		#lecture = Lecture.objects.get(pk = lecture_pk)
-		#checking if valid id entered  
+		print(student_code,attendant_pk)
+		#check if code entered is valid
+		if(student_code in lecture.attendant_set.values_list('temp_id',flat=True)):
+			# precondition: first_id is the drain (static id of student receiving id)
+			#	second_id is the source (temporary id of student giving id)
+			#   first <- second
+			#	second -> first
+			#returns message on whether they can add the student or not
+			user_message = add_edge(lecture, attendant.student_id, student_code)
+		else:
+			user_message = "Peer Code entered does not exist"
+			
+		print(user_message)
 		'''if(student__id in lecture.attendant_set.values_list('student_id', flat=True)):
 		sign_in(lecture,student__id)
 		student = lecture.attendant_set.get(student_id = student__id)
 		return render(request, 'course/addcode.html', {'lture':lecture, 'student':student}) #takes you to add code page'''
 			
 			
-		#I need to add some alert here to user but this redirects to form
-		return render(request, self.template_name)
+		#No matter what, redirects to same page. Students can add as many connections as they want. 
+		return redirect('course:add_codes' , lecture.lecture_key_slug, attendant.attendant_key_slug)
+		return render(request, self.template_name, {'attendant':attendant, 'lecture': lecture}) # change to redirect after fixing get context data
 
 
 
