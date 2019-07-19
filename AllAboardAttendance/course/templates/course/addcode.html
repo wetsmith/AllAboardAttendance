@@ -1,0 +1,14 @@
+<h1> Welcome to {{lecture.lecture_title}}, {{attendant.student_id}}</h1>
+
+<body> Your unique code: {{ attendant.temp_id }}</body><br> {{attendant}}
+
+<body>You currently have: {{attendant.connections}} / 2 connections </body>
+
+<form action="" method = "POST">
+	{% csrf_token %}
+	Peer Code: <input type = "text" name = "code">
+	
+	<input type = "hidden" name ="attendant.pk" value = "{{ attendant.pk }}">
+	<button type = "submit" class = "btn btn-default" > Sign-in </button>
+</form>
+
