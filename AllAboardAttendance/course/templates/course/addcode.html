@@ -4,11 +4,15 @@
 
 <body>You currently have: {{attendant.connections}} / 2 connections </body>
 
+<body>
 <form action="" method = "POST">
 	{% csrf_token %}
 	Peer Code: <input type = "text" name = "code">
 	
 	<input type = "hidden" name ="attendant.pk" value = "{{ attendant.pk }}">
-	<button type = "submit" class = "btn btn-default" > Sign-in </button>
+	<button type = "submit" class = "btn btn-default" > Sign-in </button> 
+	<br><br>
+	{{error_message}}
 </form>
 
+</body>

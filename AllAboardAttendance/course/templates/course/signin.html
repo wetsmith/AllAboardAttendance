@@ -43,16 +43,20 @@
 </nav>
 {% if user.is_authenticated %}
 
-<h1> {{lecture.lecture_title}} <h1>
+<h1> Sign into: {{lecture.lecture_title}} </h1>
 
+<body>
+<br>
 <form action="" method = "POST">
 	{% csrf_token %}
-	Cruz_ID: <input type = "text" name = "student_id">@ucsc.edu
+	Cruz_ID: <input type = "text" name = "student_id"  required>@ucsc.edu
 	
-	<input type = "hidden" name ="lecture.pk" value = "{{ lecture.pk }}">
-
+	<input type = "hidden" name ="lecture.pk" value = "{{ lecture.pk }}" > 
 	<button type = "submit" class = "btn btn-default" > Sign-in </button>
+	<br> <br>
+	{{error_message}}
 </form>
+</body>
 
 {% else %}
 <div class="jumbotron jumbotron-fluid">
