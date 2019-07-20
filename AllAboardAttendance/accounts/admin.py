@@ -1,8 +1,15 @@
 from django.contrib import admin
-from .models import Course, Student
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
 
+from .forms import CreationForm, ChangeForm
+from .models import Teacher
 
-admin.site.register(Course)
-admin.site.register(Student)
+#updates our changes for admin to use
+class CustAdmin(UserAdmin):
+    add_form = CreationForm
+    form = ChangeForm
+    model = Teacher
+    list_display = ['email', 'username',]
 
-# Register your models here.
+admin.site.register(Teacher)
