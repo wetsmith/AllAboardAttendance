@@ -45,7 +45,7 @@
 {% if user.is_authenticated %}
 
 <h1> {{lecture.lecture_title}} </h1>
-<h2> {{lecture.lecture_key_slug}}/sign-in/ <-what is this line for?  </h2>
+<h2> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
 <br>
 
 <img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code"/>
@@ -62,7 +62,7 @@
   <tbody>
     <tr>
       <td>{{ attendant.student_id }}</td>
-      <td>{{ attendant.temp_id}})</td>
+      <td>{{ attendant.temp_id}}</td>
       <td>{{ attendant.connections }}</td>
     </tr>
   </tbody>
