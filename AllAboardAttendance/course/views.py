@@ -10,18 +10,15 @@ import string,random
 from lecture.views import create_lecture, sign_in, add_edge
 from lecture.models import Lecture, Attendant, DirEdge
 from .models import Course, Student
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'course/index.html'
 	context_object_name = 'latest_course_list'
 
 	def get_queryset(self):
 		# ten most recent courses, in future we should make this more flexible
-		
-		return Course.objects.filter(
-		    pub_date__lte=timezone.now()
-		).order_by('-pub_date')[:10]
+		return Course.objects.filter(teacher=self.request.user)
 
 
 class DetailView(generic.DetailView):

@@ -11,9 +11,6 @@ It basically uses Django's built in tools about authentication.
 
 If you look at accounts/templages folder, then there's some html files about below view's. 
 '''
-
-
-
 def login(request):
     if request.method == "POST":
         username = request.POST["username"]

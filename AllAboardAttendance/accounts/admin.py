@@ -7,9 +7,5 @@ from .models import Teacher
 
 #updates our changes for admin to use
 class CustAdmin(UserAdmin):
-    add_form = CreationForm
-    form = ChangeForm
-    model = Teacher
-    list_display = ['email', 'username',]
-
-admin.site.register(Teacher)
+    pass
+admin.site.register(Teacher, CustAdmin)
