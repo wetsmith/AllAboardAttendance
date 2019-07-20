@@ -97,9 +97,9 @@ def add_edge(lecture, first_id, second_id):
 		student_1.save()
 		student_2.one_up()
 		student_2.save()
-		return "connection success"
+		return "Connection Success"
 	else:
-		return "connection failed: connection already exists"
+		return "Connection Failed: connection already exists"
 
 
 def make_ran_url():

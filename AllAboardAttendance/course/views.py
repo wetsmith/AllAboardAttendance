@@ -55,17 +55,17 @@ class SignInView(generic.DetailView):
 		lecture = Lecture.objects.get(pk = lecture_pk)
 		
 		#checking if valid id entered
-		#if successful: student is signed in and page redirects to add-codes page
-		if(student__id in lecture.attendant_set.values_list('student_id', flat=True)):
+		try:
+			student = lecture.attendant_set.get(student_id = student__id)
+		except(KeyError, Attendant.DoesNotExist):
+			#if failure: Redirect back to sign-in page with error message
+			return render(request, self.template_name, {'lecture':lecture, 'error_message': "Student ID entered does not exist. Student ID is case sensitive."})
+		else:
+			#if successful: student is signed in and page redirects to add-codes page
 			sign_in(lecture,student__id)
 			student = lecture.attendant_set.get(student_id = student__id)
 			return redirect('course:add_codes' , lecture.lecture_key_slug, student.attendant_key_slug)
-			
-		#if failure: Redirect back to sign-in page with error message
 		
-		#I need to add some alert here to user but this redirects to form
-		print("Student ID entered does not exist. Student ID is case sensitive.")
-		return render(request, self.template_name, {'lecture':lecture})
 			
 class AddCodeView(generic.DetailView):
 	model = Attendant
@@ -91,7 +91,7 @@ class AddCodeView(generic.DetailView):
 		
 		#Check is user entered their own code
 		if student_code == attendant.temp_id:
-			user_message = "You do not count as your own peer"
+			user_message = "You do not count as your own peer."
 		#check if code entered is valid
 		elif(student_code in lecture.attendant_set.values_list('temp_id',flat=True)):
 			# precondition: first_id is the drain (static id of student receiving id)
@@ -103,12 +103,10 @@ class AddCodeView(generic.DetailView):
 		else: #code does not exist in the data base
 			user_message = "Peer Code entered does not exist. Peer Code is case sensitive."
 		
-		#this message needs to be sent to user
-		print(user_message)
 		
 			
 		#No matter what, redirects to same page. Students can add as many connections as they want. 
-		return redirect('course:add_codes' , lecture.lecture_key_slug, attendant.attendant_key_slug)
+		return render(request, self.template_name, {'lecture':lecture, 'attendant':attendant, 'error_message':user_message})
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
