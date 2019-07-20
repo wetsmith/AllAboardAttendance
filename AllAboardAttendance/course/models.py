@@ -5,11 +5,10 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 #from lecture import models as Lecture
-from accounts.models import CourseList
+from accounts.models import Teacher
 
 class Course(models.Model):
-	# note: lecture model has a foriegn key to here!
-	course_list = models.ForeignKey(CourseList, on_delete=models.CASCADE, null = True)
+	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
 	pub_date = models.DateTimeField('date published', default = timezone.now())
 	course_title = models.CharField(max_length=50)
 	course_title_slug = models.SlugField(
