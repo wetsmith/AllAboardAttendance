@@ -13,8 +13,19 @@ from datetime import timedelta
 
 import qrcode
 import string, random
+import os
+import networkx as nx
+import matplotlib.pyplot as plt
 
 from .models import Lecture, Attendant, DirEdge
+
+class OverwriteStorage(get_storage_class()):
+    def _save(self, name, content):
+        self.delete(name)
+        return super(OverwriteStorage, self)._save(name, content)
+    
+#    def get_available_name(self, name):
+#        return name
 
 class str2(str):
     def __repr__(self):
@@ -229,11 +240,8 @@ def generateGraph(L):
     try:
         plt.savefig(g, format='png')
         L.lecture_graph.save(L.lecture_title_slug, ContentFile(g.getvalue()))
-        upload_dir_path = Setting.objects.get(entry__exact='/AllAboardAttendance/media/graphs').value
-        delete_files(upload_dir_path)
-        upload = form.save(commit=False)
-        upload.file.storage.location = upload_dir_path
-        upload = form.save()
+        attendance.clear()
+        plt.clf()
     finally:
         g.close()
 

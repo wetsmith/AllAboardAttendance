@@ -1,5 +1,5 @@
 import datetime
-
+from .storage import OverwriteStorage
 
 from django.db import models
 from django.utils import timezone
@@ -23,6 +23,8 @@ class Lecture(models.Model):
         upload_to = 'qrimages',
         null = True)
     lecture_graph = models.ImageField(
+        max_length = 100,
+        storage = OverwriteStorage()
         upload_to = 'graphs',
         null = True)
     pub_date = models.DateTimeField('date published', default = timezone.now())
