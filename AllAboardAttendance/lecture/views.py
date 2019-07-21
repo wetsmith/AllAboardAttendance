@@ -19,14 +19,6 @@ import matplotlib.pyplot as plt
 
 from .models import Lecture, Attendant, DirEdge
 
-class OverwriteStorage(get_storage_class()):
-    def _save(self, name, content):
-        self.delete(name)
-        return super(OverwriteStorage, self)._save(name, content)
-    
-#    def get_available_name(self, name):
-#        return name
-
 class str2(str):
     def __repr__(self):
         return ''.join(('"', super().__repr__()[1:-1], '"'))

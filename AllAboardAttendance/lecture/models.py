@@ -24,7 +24,7 @@ class Lecture(models.Model):
         null = True)
     lecture_graph = models.ImageField(
         max_length = 100,
-        storage = OverwriteStorage()
+        storage = OverwriteStorage(),
         upload_to = 'graphs',
         null = True)
     pub_date = models.DateTimeField('date published', default = timezone.now())
