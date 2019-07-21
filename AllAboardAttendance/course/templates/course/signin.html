@@ -27,7 +27,7 @@
 <br>
 <form align = "center" action="" method = "POST">
 	{% csrf_token %}
-	Cruz_ID: <input align = "center" type = "text" name = "student_id"  required>@ucsc.edu
+	CruzID: <input align = "center" type = "text" name = "student_id"  required>@ucsc.edu
 	<input type = "hidden" name ="lecture.pk" value = "{{ lecture.pk }}" > 
 	<br><br>
 	<button type = "submit" class = "btn btn-primary" > Sign-in </button> 
