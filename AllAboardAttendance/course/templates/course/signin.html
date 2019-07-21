@@ -41,7 +41,6 @@
     </form>
   </div>
 </nav>
-{% if user.is_authenticated %}
 
 <h1 align = "center"> Sign into: {{lecture.lecture_title}} </h1>
 
@@ -58,18 +57,7 @@
 </form>
 </body>
 
-{% else %}
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h2 class="display-4">
-      You are not authenticated. <br>
-    </h2>
-    <p class="lead">
-      Please log in or sign up before using our service. <br>
-    </p>
-  </div>
-</div>
-{% endif %}
+
 
 
 </html>
