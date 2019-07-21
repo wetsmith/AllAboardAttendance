@@ -100,6 +100,7 @@ class AddCodeView(generic.DetailView):
 		#Check is user entered their own code
 		if student_code == attendant.temp_id:
 			user_message = "You do not count as your own peer."
+			return render(request, self.template_name, {'lecture':lecture, 'attendant':attendant, 'error_message':user_message})
 		#check if code entered is valid
 		elif(student_code in lecture.attendant_set.values_list('temp_id',flat=True)):
 			# precondition: first_id is the drain (static id of student receiving id)
@@ -108,13 +109,20 @@ class AddCodeView(generic.DetailView):
 			#	second -> first
 			#returns message on whether they can add the student or not
 			user_message = add_edge(lecture, attendant.student_id, student_code)
+			
+			if user_message == "Connection Success":
+				return redirect('course:add_codes' , lecture.lecture_key_slug, attendant.attendant_key_slug)
+			else:
+				return render(request, self.template_name, {'lecture':lecture, 'attendant':attendant, 'error_message':user_message})
+			
 		else: #code does not exist in the data base
 			user_message = "Peer Code entered does not exist. Peer Code is case sensitive."
-		
+			
+			#No matter what, redirects to same page. Students can add as many connections as they want. 
+			return render(request, self.template_name, {'lecture':lecture, 'attendant':attendant, 'error_message':user_message})
 		
 			
-		#No matter what, redirects to same page. Students can add as many connections as they want. 
-		return render(request, self.template_name, {'lecture':lecture, 'attendant':attendant, 'error_message':user_message})
+		
 
 
 #adds an instance of a lecture object to the course and fills it will all students in the course
