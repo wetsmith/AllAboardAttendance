@@ -47,7 +47,13 @@
 <h1 align = "center"> {{lecture.lecture_title}} </h1>
 <h3 align = "center"> {{lecture.pub_date}} </h3>
 <br>
-
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 <img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code" class = "center">
 <h2 align = "center"> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
 <br><h4 align = "center">Present:</h4>
