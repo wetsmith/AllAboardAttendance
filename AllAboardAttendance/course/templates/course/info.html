@@ -44,12 +44,12 @@
 
 {% if user.is_authenticated %}
 
-<h1> {{lecture.lecture_title}} </h1>
-<h2> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
+<h1 align = "center"> {{lecture.lecture_title}} </h1>
+<h3 align = "center"> {{lecture.pub_date}} </h3>
 <br>
 
-<img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code"/>
-
+<img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code" class = "center"/>
+<h2 align = "center"> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
 <table class="table">
   <thead class="thead-light">
     <tr>
