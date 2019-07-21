@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!--links for Bootstrap CDN-->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+<!--Navbar that has site title, home, course, admin, and login/logout buttons-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">All Aboard Attendance</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,29 +22,19 @@
       <li class="nav-item">
         <a class="nav-link" href="/course">Courses</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Get Started
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'login' %}">Log In</a>
-          <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/admin">Admin</a>
-        </div>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">Admin</a>
       </li>
-
-      <!--<li class="nav-item">-->
-        <!--<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-      <!--</li>-->
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+      {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+      {% else %}
+        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+      {% endif %}
   </div>
 </nav>
 
+<!--Box for introductions-->
 <div class="jumbotron">
   <h1 class="display-4">Welcome to All Aboard Attendance!</h1>
   <p class="lead">All Aboard Attendance is a new, efficient way of taking attendance. Instead of relying on roll call, sign-in sheets, or easily tricked login systems, All Aboard utilizes an insightful method to quickly take attendance and generate valuable data on student attendance trends.</p>
@@ -50,6 +43,8 @@
   <a class="btn btn-primary btn-lg" href="https://github.com/wetsmith/AllAboardAttendance" role="button">Learn more</a>
 </div>
 
+<!--Box for holding texts about course description/login requirment.-->
+<!--Contents changes depending on whether user is logged in or not. -->
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h2 class="display-4">
@@ -68,38 +63,6 @@
     </p>
   </div>
 </div>
-<!-- Below has some hints about our task 6. -->
-<!-- if user is not logged in, only login/signup appears. -->
-<!--<body>-->
-<!--<h1>Home Page</h1>-->
-<!--{% if user.is_authenticated %}-->
-<!--Welcome, {{user.username}}.<br>-->
-<!--&lt;!&ndash; In this version, course templates does not exists, so below line should be modified later to courses web page&ndash;&gt;-->
-<!--<a href="/../course">Courses</a>-->
-<!--<br>-->
-<!--<a href="{% url 'logout' %}">log out</a>-->
-<!--{% else %}-->
-<!--<a href="{% url 'login' %}">log in</a>-->
-<!--<br>-->
-<!--{% endif %}-->
-<!--</body>-->
 
-<!--Templates for Footer. Maybe added in future?-->
-<!--<style>-->
-<!--.footer {-->
-  <!--position: fixed;-->
-  <!--left: 0;-->
-  <!--bottom: 0;-->
-  <!--width: 100%;-->
-  <!--background-color: red;-->
-  <!--color: white;-->
-  <!--text-align: center;-->
-<!--}-->
-<!--</style>-->
-
-<!--<div class="footer">-->
-  <!--<p>Footer</p>-->
-
-<!--</div>-->
 
 </html>
