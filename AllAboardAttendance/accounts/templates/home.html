@@ -54,7 +54,7 @@
   <div class="container">
     <h2 class="display-4">
       {% if user.is_authenticated %}
-      Welcome, {{user.username}}.<br>
+      Welcome, {{user.email}}.<br>
       {% else %}
       You are not authenticated. <br>
       {% endif %}
