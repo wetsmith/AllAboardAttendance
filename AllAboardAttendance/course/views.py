@@ -39,7 +39,8 @@ class InfoView(generic.DetailView):
 		#getting the parent of attendant added for display on page
 		lists = create_attendance_lists(context['object'])
 		context['present'] = lists[2]
-		context['patial'] = lists[1]
+		context['partial'] = lists[1]
+		print(lists[1])
 		context['absent'] = lists[0]
 		context['lecture'] = context['object']
 		return context
