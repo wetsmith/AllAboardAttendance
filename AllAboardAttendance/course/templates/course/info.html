@@ -44,30 +44,67 @@
 
 {% if user.is_authenticated %}
 
-<h1> {{lecture.lecture_title}} </h1>
-<h2> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
+<h1 align = "center"> {{lecture.lecture_title}} </h1>
+<h3 align = "center"> {{lecture.pub_date}} </h3>
 <br>
 
-<img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code"/>
-
-<table class="table">
+<img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code" class = "center">
+<h2 align = "center"> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
+<br><h4 align = "center">Present:</h4>
+<table class="table" name = "present">
   <thead class="thead-light">
     <tr>
       <th scope="col">Student ID</th>
-      <th scope="col">Temp ID</th>
       <th scope="col"># of Connections</th>
     </tr>
   </thead>
-	{% for attendant in lecture.attendant_set.all %}
+	{% for attendant in present %}
   <tbody>
     <tr>
       <td>{{ attendant.student_id }}</td>
-      <td>{{ attendant.temp_id}}</td>
       <td>{{ attendant.connections }}</td>
     </tr>
   </tbody>
 	{% endfor %}
 </table>
+
+<br><h4 align = "center">Partial:</h4>
+<table class="table" name = "partial">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Student ID</th>
+      <th scope="col"># of Connections</th>
+    </tr>
+  </thead>
+	{% for attendant in partial %}
+  <tbody>
+    <tr>
+      <td>{{ attendant.student_id }}</td>
+      <td>{{ attendant.connections }}</td>
+    </tr>
+  </tbody>
+	{% endfor %}
+</table>
+
+
+<br><h4 align = "center">Absent:</h4>
+<table class="table" name = "absent">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Student ID</th>
+      <th scope="col"># of Connections</th>
+    </tr>
+  </thead>
+	{% for attendant in absent %}
+  <tbody>
+    <tr>
+      <td>{{ attendant.student_id }}</td>
+      <td>{{ attendant.connections }}</td>
+    </tr>
+  </tbody>
+	{% endfor %}
+</table>
+
 {% else %}
 <div class="jumbotron jumbotron-fluid">
   <div class="container">

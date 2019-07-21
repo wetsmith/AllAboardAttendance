@@ -7,7 +7,7 @@ from django.utils.text import slugify
 
 import string,random
 
-from lecture.views import create_lecture, sign_in, add_edge
+from lecture.views import create_lecture, sign_in, add_edge, create_attendance_lists
 from lecture.models import Lecture, Attendant, DirEdge
 from .models import Course, Student
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +33,17 @@ class InfoView(generic.DetailView):
 	template_name = 'course/info.html'
 	slug_field = 'lecture_title_slug'
 	slug_url_kwarg = 'lecture_title_slug'
+	
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		#getting the parent of attendant added for display on page
+		lists = create_attendance_lists(context['object'])
+		context['present'] = lists[2]
+		context['partial'] = lists[1]
+		print(lists[1])
+		context['absent'] = lists[0]
+		context['lecture'] = context['object']
+		return context
 
 
 class SignInView(generic.DetailView):
