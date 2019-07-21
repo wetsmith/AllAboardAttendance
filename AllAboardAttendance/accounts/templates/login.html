@@ -75,7 +75,18 @@
 </style>
 <br>
 <br>
+{% if user.is_authenticated %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h2 class="display-4">
+      You are already logged in. <br>
+    </h2>
+    <p class="lead">
+        Please continue to course menu to view your courses.<br>    </p>
+  </div>
+</div>
 
+{% else %}
 <div class="container">
     <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-success">
@@ -102,4 +113,7 @@
         </div>
     </div>
 </div>
+{% endif %}
+
+
 </html>
