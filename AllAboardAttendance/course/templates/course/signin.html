@@ -43,16 +43,16 @@
 </nav>
 {% if user.is_authenticated %}
 
-<h1> Sign into: {{lecture.lecture_title}} </h1>
+<h1 align = "center"> Sign into: {{lecture.lecture_title}} </h1>
 
-<body>
+<body align = "center">
 <br>
-<form action="" method = "POST">
+<form align = "center" action="" method = "POST">
 	{% csrf_token %}
-	Cruz_ID: <input type = "text" name = "student_id"  required>@ucsc.edu
-	
+	Cruz_ID: <input align = "center" type = "text" name = "student_id"  required>@ucsc.edu
 	<input type = "hidden" name ="lecture.pk" value = "{{ lecture.pk }}" > 
-	<button type = "submit" class = "btn btn-default" > Sign-in </button>
+	<br><br>
+	<button type = "submit" class = "btn btn-primary" > Sign-in </button> 
 	<br> <br>
 	{{error_message}}
 </form>
