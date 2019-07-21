@@ -16,9 +16,9 @@ PROJECT OVERVIEW
 
 All Aboard Attendance is a new, efficient way of taking attendance. Instead of relying on roll call, sign-in sheets, or easily tricked login systems, All Aboard utilizes an insightful method to quickly take attendance and generate valuable data on student attendance trends.
 
-If you're a student, you'll scan a QR code projected by your professor. This will take you to a session-unique URL, where you'll be given a temporary ID (usually five characters long). From here, you'll be asked to enter the temporary ID of several nearby students, along with your general location in the room. If another student has entered your temporary ID, don't worry about entering theirs - that connection has been marked for both of you!
+If you're a student, you'll scan a QR code projected by your professor. This will take you to a lecture-unique URL, where you'll be given a temporary ID (usually five characters long). From here, you'll be asked to enter the temporary ID of several nearby students. If another student has entered your temporary ID, don't worry about entering theirs - that connection has been marked for both of you!
 
-If you're a professor, you'll be able to host unique attendance "sessions," which generally represent the attendance of a single lecture. In other words, if your course has thirty lectures throughout the term, you'll likely have thirty attendance sessions. Hosting a new attendance session will generate a QR code you should project for your students, as well as take you to a new page where you can end the current attendance session. When you end the session, the attendance data from the session will be stored, allowing you to accurately grade your students attendance.
+If you're a professor, you'll be able to open a unique attendance window for each lecture, which generally represent the attendance of a single lecture. In other words, if your course has thirty lectures throughout the term, you'll likely have thirty attendance sessions. Hosting a new attendance session will generate a QR code you should project for your students, as well as take you to a new page where you can end the current attendance session. When you end the session, the attendance data from the session will be stored, allowing you to accurately grade your students attendance.
 
 "What's so valuable about attendance data?"
 
