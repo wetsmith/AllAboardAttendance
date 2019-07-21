@@ -86,7 +86,7 @@ def sign_in(lecture, identity):
 		if(student.connections == -1):
 			student.one_up()
 			student.save()
-			return ""
+		return ""
 	else:
 		return "The lecture sign-in window has elapsed."
 
