@@ -3,12 +3,16 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-import string, random
+from django.core.files.base import ContentFile
+
 
 from PIL import Image
 from io import BytesIO
-from django.core.files.base import ContentFile
+from datetime import timedelta
+
+
 import qrcode
+import string, random
 
 from .models import Lecture, Attendant, DirEdge
 
@@ -76,10 +80,15 @@ def create_attendance_lists(lecture, quota = 2):
 
 
 def sign_in(lecture, identity):
-	student = lecture.attendant_set.get(student_id = identity)
-	if(student.connections == -1):
-		student.one_up()
-		student.save()
+	# timedelta represents lecture attendance window. hardcode for now - should be editable from user in future release
+	if (timezone.now() <= lecture.pub_date + timedelta(minutes=15)):
+		student = lecture.attendant_set.get(student_id = identity)
+		if(student.connections == -1):
+			student.one_up()
+			student.save()
+			return ""
+	else:
+		return "The lecture sign-in window has elapsed."
 
 
 # precondition: first_id is the drain (static id of student receiving id)

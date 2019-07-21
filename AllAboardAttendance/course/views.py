@@ -70,10 +70,13 @@ class SignInView(generic.DetailView):
 			return render(request, self.template_name, {'lecture':lecture, 'error_message': "Student ID entered does not exist. Student ID is case sensitive."})
 		else:
 			#if successful: student is signed in and page redirects to add-codes page
-			sign_in(lecture,student__id)
+			message = sign_in(lecture,student__id)
 			student = lecture.attendant_set.get(student_id = student__id)
-			return redirect('course:add_codes' , lecture.lecture_key_slug, student.attendant_key_slug)
-		
+			
+			if message == "":
+				return redirect('course:add_codes' , lecture.lecture_key_slug, student.attendant_key_slug)
+			else:
+				return render(request, self.template_name, {'lecture':lecture, 'error_message':message})
 			
 class AddCodeView(generic.DetailView):
 	model = Attendant
