@@ -73,7 +73,7 @@ class SignInView(generic.DetailView):
 			message = sign_in(lecture,student__id)
 			student = lecture.attendant_set.get(student_id = student__id)
 			
-			if message == "The lecture sign-in window has elapsed.":
+			if message == "":
 				return redirect('course:add_codes' , lecture.lecture_key_slug, student.attendant_key_slug)
 			else:
 				return render(request, self.template_name, {'lecture':lecture, 'error_message':message})
