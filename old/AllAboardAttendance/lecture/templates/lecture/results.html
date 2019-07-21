@@ -1,7 +1,0 @@
-<b>{{ lecture.lecture_title }}
-
-<ul>
-{% for attendant in lecture.attendant_set.all %}
-    <li>{{ attendant.student_id }} -- {{ attendant.connections }} connections</li>
-{% endfor %}
-</ul>

@@ -16,6 +16,9 @@ import string, random
 
 from .models import Lecture, Attendant, DirEdge
 
+class str2(str):
+    def __repr__(self):
+        return ''.join(('"', super().__repr__()[1:-1], '"'))
 
 class IndexView(generic.ListView):
 	template_name = 'lecture/index.html'
@@ -179,3 +182,60 @@ def make_lecture_qr(lecture):
 		lecture.lecture_qr.save(lecture.lecture_title_slug, ContentFile(f.getvalue()))
 	finally:
 		f.close()
+
+def makeEdgesList(L):
+    edgesList = []
+    
+    for at in L.attendant_set.all():
+        for x in at.diredge_set.all():
+            edgesList.append((str2(x.attendant.student_id), str2(x.direction_id)))
+    return edgesList
+
+def generateGraph(L):
+    edgesList = makeEdgesList(L)
+    
+    #    for at in L.attendant_set.all():
+    #        for x in at.diredge_set.all():
+    #            edgesList.append((x.attendant.student_id, x.direction_id))
+    
+    attendance = nx.DiGraph()
+    weights = {}
+    g = BytesIO()
+    
+    
+    for (x,y) in edgesList:
+        attendance.add_edge(x, y)
+        weights[x] = 0
+        weights[y] = 0
+
+    nodeNames = []
+
+    for (x,y) in edgesList:
+        weights[x] = weights[x] + 1
+        weights[y] = weights[y] + 1
+        if x not in nodeNames:
+            nodeNames.append(x)
+        if y not in nodeNames:
+            nodeNames.append(y)
+
+    sizes = []
+    names = {}
+    for n in nodeNames:
+        names[str(n)] = n + ": " + str(weights[n])
+        sizes.append(700 * len(n))
+
+    nx.draw_random(attendance, node_size = sizes, labels = names, with_labels = True)
+    #    plt.savefig("./AllAboardAttendance/media/graphs/lecture.png")
+    try:
+        plt.savefig(g, format='png')
+        L.lecture_graph.save(L.lecture_title_slug, ContentFile(g.getvalue()))
+        upload_dir_path = Setting.objects.get(entry__exact='/AllAboardAttendance/media/graphs').value
+        delete_files(upload_dir_path)
+        upload = form.save(commit=False)
+        upload.file.storage.location = upload_dir_path
+        upload = form.save()
+    finally:
+        g.close()
+
+    
+
