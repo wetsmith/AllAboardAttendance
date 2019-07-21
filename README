@@ -11,6 +11,48 @@ https://docs.google.com/spreadsheets/d/12MuSUxdFPOvvFqxwLG5isuRCMR8EsLbJs3T2HyLb
 SCRUM Board:
 https://trello.com/b/3gWsBAES/all-aboard
 
+**************************************************************************
+
+BUILD INSTALLATION INSTRUCTIONS
+
+Clone this repo to a directory on your machine. Ensure you have the necessary libraries:
+
+	$ pip install qrcode[pil]
+	$ pip install networkx
+	$ pip install matplotlib
+
+From a command prompt, navigate to the project directory, which should look like this:
+
+	\AllAboardAttendance\AllAboardAttendance
+		\accounts
+		\AllAboardAttendance
+		\course
+		\lecture
+		\media
+		\templates
+		.DS_Store
+		db.sqlite3
+		manage.py
+
+While in this directory, run the following commands:
+
+	$ python manage.py makemigrations
+	$ python manage.py migrate
+	$ python manage.py createsuperuser
+
+Follow the prompts to create an admin account. Then, run the server:
+
+	$ python manage.py runserver
+
+From a browser, navigate to the home page localhost address:
+
+	http://localhost:8000/
+
+If you wish to create courses, student IDs, or instructor accounts, navigate to the admin page and log in using the superuser credentials you defined earlier:
+
+	http://localhost:8000/admin/
+
+**************************************************************************
 
 PROJECT OVERVIEW
 
