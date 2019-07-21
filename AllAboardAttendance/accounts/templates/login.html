@@ -47,14 +47,14 @@
     <!--<h1>login</h1>-->
 
     <!--{% if error %}-->
-    <!--<p>email of password incorrect</p>-->
+    <!--<p>username of password incorrect</p>-->
     <!--{% endif %}-->
 
     <!--<form method="POST" action="{%url 'login'%}">-->
         <!--{% csrf_token %}-->
-        <!--Email:-->
+        <!--Username:-->
         <!--<br>-->
-        <!--<input name="Email" type="text">-->
+        <!--<input name="username" type="text">-->
         <!--<br>-->
         <!--Password:-->
         <!--<br>-->
@@ -89,7 +89,7 @@
                 <form method="POST" action="{%url 'login'%}" id="login-form">
                     {% csrf_token %}
                     <div>
-                        <input type="text" class="form-control" name="email" placeholder="email" autofocus>
+                        <input type="text" class="form-control" name="username" placeholder="Email" autofocus>
                     </div>
                     <div>
                         <input type="password" class="form-control" name="password" placeholder="Password">
