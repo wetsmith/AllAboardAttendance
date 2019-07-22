@@ -66,7 +66,7 @@ def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'
 			key = make_ran_url()
 		else:
 			checking = False
-		
+
 	s = Lecture(lecture_title = name, lecture_key = key)
 	s.save()
 	s.pub_date = timezone.now()
@@ -119,7 +119,7 @@ def add_edge(lecture, first_id, second_id):
 		student_1.save()
 		student_2.one_up()
 		student_2.save()
-		generate_graph(lecture)
+		generate_graph(lecture) # causes massive slowdown
 
 		return "Connection Success"
 	else:
@@ -232,23 +232,25 @@ def generate_graph(lecture):
 	names = {}
 	for n in node_names:
 		names[str(n)] = n[:5] # first five characters of ID, add this to print connection count: + ": " + str(weights[n])
-		sizes.append(700 * len(n))
+		sizes.append(70*len(n))
+	
+	light_blue = cmap_map(lambda x: x/2 + 0.5, matplotlib.cm.winter)
 	# kamada_kawai great
 	# shell great
-	light_blue = cmap_map(lambda x: x/2 + 0.5, matplotlib.cm.winter)
+	
 
-
-	nx.draw_circular(attendance, 
-		node_size = sizes, 
+	nx.draw_shell(attendance,
+		node_size = 100,
+		font_size = 2, 
 		node_color=range(len(node_names)), # gradient colors 
 		edge_color=range(len(edge_list)),
-		cmap=light_blue, # our color scope is blues
+		cmap=light_blue, # color is blues
 		#edge_cmap=matplotlib.cm.copper,
 		labels = names, 
 		with_labels = True)
 	#    plt.savefig("./AllAboardAttendance/media/graphs/lecture.png")
 	try:
-		plt.savefig(g, format='png')
+		plt.savefig(g, format='png', dpi=500)
 		lecture.lecture_graph.save(lecture.lecture_title_slug, ContentFile(g.getvalue()))
 		attendance.clear()
 		plt.clf()

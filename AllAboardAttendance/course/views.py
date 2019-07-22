@@ -141,3 +141,24 @@ def open_lecture(request, course_id):
 	
 	next = request.POST.get('next', '/')
 	return HttpResponseRedirect(next)
+
+
+def db_fill_for_unit_test(given_course_title):
+
+	course = Course.objects.get(course_title = given_course_title)
+
+	for student in range(150):
+		new_id = ''.join(random.choice(string.ascii_uppercase) for x in range(5))
+		course.student_set.create(student_id = new_id)
+
+	student_ids = course.student_set.values_list('student_id', flat = True)
+	new_lecture = create_lecture(student_ids, "auto-gen lecture title")
+	course.lecture_set.add(new_lecture)
+
+	for drain_attendant in new_lecture.attendant_set.all():
+		for x in range (random.randint(0, 3)):
+			source_attendant = random.choice(new_lecture.attendant_set.all())
+			if(source_attendant != drain_attendant):
+				add_edge(new_lecture, drain_attendant.student_id, source_attendant.temp_id)
+
+	return course
