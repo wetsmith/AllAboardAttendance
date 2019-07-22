@@ -112,6 +112,8 @@ def add_edge(lecture, first_id, second_id):
 		student_1.save()
 		student_2.one_up()
 		student_2.save()
+		generate_graph(lecture)
+
 		return "Connection Success"
 	else:
 		return "Connection Failed: connection already exists"
@@ -186,56 +188,53 @@ def make_lecture_qr(lecture):
 	finally:
 		f.close()
 
-def makeEdgesList(L):
-    edgesList = []
-    
-    for at in L.attendant_set.all():
-        for x in at.diredge_set.all():
-            edgesList.append((str2(x.attendant.student_id), str2(x.direction_id)))
-    return edgesList
+def make_edge_list(lecture):
+	edge_list = []
 
-def generateGraph(L):
-    edgesList = makeEdgesList(L)
-    
-    #    for at in L.attendant_set.all():
-    #        for x in at.diredge_set.all():
-    #            edgesList.append((x.attendant.student_id, x.direction_id))
-    
-    attendance = nx.DiGraph()
-    weights = {}
-    g = BytesIO()
-    
-    
-    for (x,y) in edgesList:
-        attendance.add_edge(x, y)
-        weights[x] = 0
-        weights[y] = 0
+	for attendant in lecture.attendant_set.all():
+		for x in attendant.diredge_set.all():
+			edge_list.append((str2(x.attendant.student_id), str2(x.direction_id)))
+	return edge_list
 
-    nodeNames = []
+def generate_graph(lecture):
+	edge_list = make_edge_list(lecture)
 
-    for (x,y) in edgesList:
-        weights[x] = weights[x] + 1
-        weights[y] = weights[y] + 1
-        if x not in nodeNames:
-            nodeNames.append(x)
-        if y not in nodeNames:
-            nodeNames.append(y)
+	#    for at in L.attendant_set.all():
+	#        for x in at.diredge_set.all():
+	#            edgesList.append((x.attendant.student_id, x.direction_id))
 
-    sizes = []
-    names = {}
-    for n in nodeNames:
-        names[str(n)] = n + ": " + str(weights[n])
-        sizes.append(700 * len(n))
+	attendance = nx.DiGraph()
+	weights = {}
+	g = BytesIO()
 
-    nx.draw_random(attendance, node_size = sizes, labels = names, with_labels = True)
-    #    plt.savefig("./AllAboardAttendance/media/graphs/lecture.png")
-    try:
-        plt.savefig(g, format='png')
-        L.lecture_graph.save(L.lecture_title_slug, ContentFile(g.getvalue()))
-        attendance.clear()
-        plt.clf()
-    finally:
-        g.close()
 
-    
+	for (x,y) in edge_list:
+		attendance.add_edge(x, y)
+		weights[x] = 0
+		weights[y] = 0
 
+	node_names = []
+
+	for (x,y) in edge_list:
+		weights[x] = weights[x] + 1
+		weights[y] = weights[y] + 1
+		if x not in node_names:
+			node_names.append(x)
+		if y not in node_names:
+			node_names.append(y)
+
+	sizes = []
+	names = {}
+	for n in node_names:
+		names[str(n)] = n + ": " + str(weights[n])
+		sizes.append(700 * len(n))
+
+	nx.draw_random(attendance, node_size = sizes, labels = names, with_labels = True)
+	#    plt.savefig("./AllAboardAttendance/media/graphs/lecture.png")
+	try:
+		plt.savefig(g, format='png')
+		lecture.lecture_graph.save(lecture.lecture_title_slug, ContentFile(g.getvalue()))
+		attendance.clear()
+		plt.clf()
+	finally:
+		g.close()

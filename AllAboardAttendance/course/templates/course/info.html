@@ -49,6 +49,7 @@ img {
 }
 </style>
 <img src="{{ lecture.lecture_qr.url }}" alt="lecture QR code" class = "center">
+
 <h2 align = "center"> www.AllAboardDomain.com/course/{{lecture.lecture_key_slug}}/sign-in/</h2>
 <br><h4 align = "center">Present:</h4>
 <table class="table" name = "present">
@@ -104,6 +105,8 @@ img {
   </tbody>
 	{% endfor %}
 </table>
+
+<img src="{{ lecture.lecture_graph.url }}" alt="lecture graph" class = "center">
 
 {% else %}
 <div class="jumbotron jumbotron-fluid">
