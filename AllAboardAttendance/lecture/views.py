@@ -14,8 +14,15 @@ from datetime import timedelta
 import qrcode
 import string, random
 import os
+
 import networkx as nx
+import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from matplotlib import cm
+
+import numpy as np
+
 
 from .models import Lecture, Attendant, DirEdge
 
@@ -28,10 +35,6 @@ class IndexView(generic.ListView):
 	context_object_name = 'latest_lecture_list'
 
 	def get_queryset(self):
-		"""
-		Return the last five published questions (not including those set to be
-		published in the future).
-		"""
 		return Lecture.objects.filter(
 			pub_date__lte=timezone.now()
 		).order_by('-pub_date')[:5]
@@ -54,7 +57,7 @@ class ResultsView(generic.DetailView):
 
 
 def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'], name = 'default'):
-	
+	# make our random URL similar to how we make our student IDs.
 	key = make_ran_url()
 	checking = True
 	while checking:
@@ -66,7 +69,8 @@ def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'
 		
 	s = Lecture(lecture_title = name, lecture_key = key)
 	s.save()
-
+	s.pub_date = timezone.now()
+	s.save()
 	make_lecture_qr(s)
 
 	#student_id_list = ["Trevor", "Wesley", "Matt"] # temporary until parameter functionality done
@@ -78,6 +82,7 @@ def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'
 
 
 def create_attendance_lists(lecture, quota = 2):
+	# quota for full attendance hardcoded for now. Future release will expand user functionality here.
 	absent = lecture.attendant_set.filter(connections=-1).order_by('student_id')
 	partial = lecture.attendant_set.filter(connections__range=(0,quota-1)).order_by('student_id')
 	full = lecture.attendant_set.filter(connections__gte = quota).order_by('student_id')
@@ -97,13 +102,15 @@ def sign_in(lecture, identity):
 		return "The lecture sign-in window has elapsed."
 
 
-# precondition: first_id is the drain (static id of student receiving id)
-#			   second_id is the source (temporary id of student giving id)
-#			   first <- second
-#			   second -> first
 def add_edge(lecture, first_id, second_id):
 	student_1 = lecture.attendant_set.get(student_id = first_id)
 	student_2 = lecture.attendant_set.get(temp_id = second_id)
+
+
+	# precondition: first_id is the drain (static id of student receiving id)
+	#			   second_id is the source (temporary id of student giving id)
+	#			   first <- second
+	#			   second -> first
 
 	if((len(student_1.diredge_set.filter(direction_id = student_2.student_id)) == 0) and (len(student_2.diredge_set.filter(direction_id = student_1.student_id)) == 0)): # check if edge added functionality to be implemented
 		edge = student_2.diredge_set.create(direction_id = first_id)
@@ -126,6 +133,9 @@ def make_ran_url():
 def make_id_list(class_size):
 	temp_id = []
 
+	# the for loop generates a random ID made of uppercase ASCII characters and ASCII digits.
+	# it then compares them against all other assigned random IDs in the lecture (O(n!)). Not
+	# greatly efficient, but for lectures with <10,000 members it executes quickly enough.
 	for x in range(class_size):
 		rand_id = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(5)) # hardcoded length of 5
 		index = 0
@@ -188,25 +198,20 @@ def make_lecture_qr(lecture):
 	finally:
 		f.close()
 
-def make_edge_list(lecture):
-	edge_list = []
+def generate_graph(lecture):
 
+	edge_list = []
+	edge_time_list = []
 	for attendant in lecture.attendant_set.all():
 		for x in attendant.diredge_set.all():
 			edge_list.append((str2(x.attendant.student_id), str2(x.direction_id)))
-	return edge_list
+			edge_time_list.append(x.pub_date)
 
-def generate_graph(lecture):
-	edge_list = make_edge_list(lecture)
-
-	#    for at in L.attendant_set.all():
-	#        for x in at.diredge_set.all():
-	#            edgesList.append((x.attendant.student_id, x.direction_id))
+	# add comments Suley!
 
 	attendance = nx.DiGraph()
 	weights = {}
 	g = BytesIO()
-
 
 	for (x,y) in edge_list:
 		attendance.add_edge(x, y)
@@ -226,10 +231,21 @@ def generate_graph(lecture):
 	sizes = []
 	names = {}
 	for n in node_names:
-		names[str(n)] = n + ": " + str(weights[n])
+		names[str(n)] = n[:5] # first five characters of ID, add this to print connection count: + ": " + str(weights[n])
 		sizes.append(700 * len(n))
+	# kamada_kawai great
+	# shell great
+	light_blue = cmap_map(lambda x: x/2 + 0.5, matplotlib.cm.winter)
 
-	nx.draw_random(attendance, node_size = sizes, labels = names, with_labels = True)
+
+	nx.draw_circular(attendance, 
+		node_size = sizes, 
+		node_color=range(len(node_names)), # gradient colors 
+		edge_color=range(len(edge_list)),
+		cmap=light_blue, # our color scope is blues
+		#edge_cmap=matplotlib.cm.copper,
+		labels = names, 
+		with_labels = True)
 	#    plt.savefig("./AllAboardAttendance/media/graphs/lecture.png")
 	try:
 		plt.savefig(g, format='png')
@@ -238,3 +254,36 @@ def generate_graph(lecture):
 		plt.clf()
 	finally:
 		g.close()
+
+
+# https://scipy-cookbook.readthedocs.io/items/Matplotlib_ColormapTransformations.html
+def cmap_map(function, cmap):
+    """ Applies function (which should operate on vectors of shape 3: [r, g, b]), on colormap cmap.
+    This routine will break any discontinuous points in a colormap.
+    """
+    cdict = cmap._segmentdata
+    step_dict = {}
+    # Firt get the list of points where the segments start or end
+    for key in ('red', 'green', 'blue'):
+        step_dict[key] = list(map(lambda x: x[0], cdict[key]))
+
+    step_list = sum(step_dict.values(), [])
+    step_list = np.array(list(set(step_list)))
+    # Then compute the LUT, and apply the function to the LUT
+    reduced_cmap = lambda step : np.array(cmap(step)[0:3])
+    old_LUT = np.array(list(map(reduced_cmap, step_list)))
+    new_LUT = np.array(list(map(function, old_LUT)))
+    # Now try to make a minimal segment definition of the new LUT
+    cdict = {}
+    for i, key in enumerate(['red','green','blue']):
+        this_cdict = {}
+        for j, step in enumerate(step_list):
+            if step in step_dict[key]:
+                this_cdict[step] = new_LUT[j, i]
+            elif new_LUT[j,i] != old_LUT[j, i]:
+                this_cdict[step] = new_LUT[j, i]
+        colorvector = list(map(lambda x: x + (x[1], ), this_cdict.items()))
+        colorvector.sort()
+        cdict[key] = colorvector
+
+    return matplotlib.colors.LinearSegmentedColormap('colormap',cdict,1024)

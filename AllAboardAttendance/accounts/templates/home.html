@@ -51,14 +51,14 @@
       {% if user.is_authenticated %}
       Welcome, {{user.email}}.<br>
       {% else %}
-      You are not authenticated. <br>
+      You are not currently logged in. <br>
       {% endif %}
     </h2>
     <p class="lead">
       {% if user.is_authenticated %}
-      Please continue to course menu to view your courses.<br>
+      Please continue to the Courses page to view your courses.<br>
       {% else %}
-      Please log in or sign up before using our service. <br>
+      If you are an instructor, please log in. If you are a student signing in for attendance, please scan your lecture's QR code. <br>
       {% endif %}
     </p>
   </div>

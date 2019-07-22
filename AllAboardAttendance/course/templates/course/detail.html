@@ -45,7 +45,7 @@
     <form action="{% url 'course:open_lecture' course.id %}" method = "POST" >
         {% csrf_token %}
         <div class="form-group">
-            <p style="font-size:20px">Lecture Title: <input type = "text" name = "lecture_title">
+            <p style="font-size:20px">Lecture Title: <input type = "text" name = "lecture_title" required>
             <input type = "hidden" name = "next" value = "{{ request.path }}"  >
 
             <button type = "submit" class = "btn btn-primary" > Start New Lecture </button></p>
