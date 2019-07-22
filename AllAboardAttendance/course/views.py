@@ -147,7 +147,7 @@ def db_fill_for_unit_test(given_course_title):
 
 	course = Course.objects.get(course_title = given_course_title)
 
-	for student in range(150):
+	for student in range(40):
 		new_id = ''.join(random.choice(string.ascii_uppercase) for x in range(5))
 		course.student_set.create(student_id = new_id)
 
