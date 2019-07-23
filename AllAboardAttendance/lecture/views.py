@@ -27,33 +27,8 @@ import numpy as np
 from .models import Lecture, Attendant, DirEdge
 
 class str2(str):
-    def __repr__(self):
-        return ''.join(('"', super().__repr__()[1:-1], '"'))
-
-class IndexView(generic.ListView):
-	template_name = 'lecture/index.html'
-	context_object_name = 'latest_lecture_list'
-
-	def get_queryset(self):
-		return Lecture.objects.filter(
-			pub_date__lte=timezone.now()
-		).order_by('-pub_date')[:5]
-
-
-class DetailView(generic.DetailView):
-	model = Lecture
-	template_name = 'lecture/detail.html'
-
-	def get_queryset(self):
-		"""
-		Excludes any questions that aren't published yet.
-		"""
-		return Lecture.objects.filter(pub_date__lte=timezone.now())
-
-
-class ResultsView(generic.DetailView):
-	model = Lecture
-	template_name = 'Lecture/results.html'
+	def __repr__(self):
+		return ''.join(('"', super().__repr__()[1:-1], '"'))
 
 
 def create_lecture(student_id_list = ['These','are', 'default', 'test', 'values'], name = 'default'):
@@ -207,8 +182,6 @@ def generate_graph(lecture):
 			edge_list.append((str2(x.attendant.student_id), str2(x.direction_id)))
 			edge_time_list.append(x.pub_date)
 
-	# add comments Suley!
-
 	attendance = nx.DiGraph()
 	weights = {}
 	g = BytesIO()
@@ -221,7 +194,7 @@ def generate_graph(lecture):
 	node_names = []
 
 	for (x,y) in edge_list:
-		weights[x] = weights[x] + 1
+		weights[x] = weights[x] + 1 # not NetworkX weights. These are for printing.
 		weights[y] = weights[y] + 1
 		if x not in node_names:
 			node_names.append(x)
@@ -234,21 +207,16 @@ def generate_graph(lecture):
 		names[str(n)] = n[:5] # first five characters of ID, add this to print connection count: + ": " + str(weights[n])
 		sizes.append(70*len(n))
 	
-	light_blue = cmap_map(lambda x: x/2 + 0.5, matplotlib.cm.winter)
-	# kamada_kawai great
-	# shell great
-	
+	light_blue = cmap_map(lambda x: x/2 + 0.5, matplotlib.cm.winter) # winter is a nice, theme-consistent color
 
 	nx.draw_shell(attendance,
 		node_size = 100,
 		font_size = 2, 
 		node_color=range(len(node_names)), # gradient colors 
 		edge_color=range(len(edge_list)),
-		cmap=light_blue, # color is blues
-		#edge_cmap=matplotlib.cm.copper,
+		cmap=light_blue, # node color is a mix of light greens through blues
 		labels = names, 
 		with_labels = True)
-	#    plt.savefig("./AllAboardAttendance/media/graphs/lecture.png")
 	try:
 		plt.savefig(g, format='png', dpi=500)
 		lecture.lecture_graph.save(lecture.lecture_title_slug, ContentFile(g.getvalue()))

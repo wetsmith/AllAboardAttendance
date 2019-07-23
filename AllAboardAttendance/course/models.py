@@ -31,13 +31,8 @@ class Course(models.Model):
 
 class Student(models.Model):
 	student_id = models.CharField(max_length=20, default = 'student')
-	student_id_slug = models.SlugField(max_length=20, default = 'student')
 	course = models.ForeignKey(Course, on_delete=models.CASCADE, null = True)
 	# save override here, just like in course. Automatically make our slugs from the student id.
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.student_id_slug = slugify(self.student_id)
-		super(Student, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.student_id
