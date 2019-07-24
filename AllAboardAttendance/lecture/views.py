@@ -243,7 +243,7 @@ def generate_graph(lecture):
 
 
 	# https://scipy-cookbook.readthedocs.io/items/Matplotlib_ColormapTransformations.html
-	def cmap_map(function, cmap):
+def cmap_map(function, cmap):
 	""" Applies function (which should operate on vectors of shape 3: [r, g, b]), on colormap cmap.
 	This routine will break any discontinuous points in a colormap.
 	"""
