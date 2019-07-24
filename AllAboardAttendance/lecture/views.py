@@ -26,6 +26,11 @@ import numpy as np
 
 from .models import Lecture, Attendant, DirEdge
 
+# This clas is a roundabout way of making sure that the dictionary keys match the database
+# during the process when attendance information is taken. Only difference from normal 
+# str() is that this one uses double quotes ("") as opposed to single quotes ('')
+# Does it make sense? No, python strings are valid with both single and double quotes.
+# Does it make the code work? Yes.
 class str2(str):
 	def __repr__(self):
 		return ''.join(('"', super().__repr__()[1:-1], '"'))
@@ -173,42 +178,50 @@ def make_lecture_qr(lecture):
 	finally:
 		f.close()
 
+# Creating a list of tuples with edge starting point and destination in order to create 
+# the NetworkX graph in the generate_graph function.
 def generate_graph(lecture):
 
 	edge_list = []
 	edge_time_list = []
 	for attendant in lecture.attendant_set.all():
-		for x in attendant.diredge_set.all():
-			edge_list.append((str2(x.attendant.student_id), str2(x.direction_id)))
-			edge_time_list.append(x.pub_date)
+		for classmate in attendant.diredge_set.all():
+			edge_list.append((str2(classmate.attendant.student_id), str2(classmate.direction_id)))
+			edge_time_list.append(classmate.pub_date)
 
 	attendance = nx.DiGraph()
 	weights = {}
 	g = BytesIO()
 
-	for (x,y) in edge_list:
-		attendance.add_edge(x, y)
-		weights[x] = 0
-		weights[y] = 0
+	# Add every single node and edge to the NetworkX graph, in addition to 
+	# marking students as "present" by initializing weight to 0
+	for (origin, destination) in edge_list:
+		attendance.add_edge(origin, destination)
+		weights[origin] = 0
+		weights[destination] = 0
 
 	node_names = []
 
-	for (x,y) in edge_list:
-		weights[x] = weights[x] + 1 # not NetworkX weights. These are for printing.
-		weights[y] = weights[y] + 1
-		if x not in node_names:
-			node_names.append(x)
-		if y not in node_names:
-			node_names.append(y)
+	# Add proper number of connections associated with each student, both inbound and outbound
+	# Create list for labelling nodes in graph
+	for (origin, destination) in edge_list:
+		weights[origin] = weights[origin] + 1 # not NetworkX weights. These are for printing.
+		weights[destination] = weights[destination] + 1
+		if origin not in node_names:
+			node_names.append(origin)
+		if destination not in node_names:
+			node_names.append(destination)
 
 	sizes = []
 	names = {}
+	# Create the actual node labels
 	for n in node_names:
 		names[str(n)] = n[:5] # first five characters of ID, add this to print connection count: + ": " + str(weights[n])
 		sizes.append(70*len(n))
 	
 	light_blue = cmap_map(lambda x: x/2 + 0.5, matplotlib.cm.winter) # winter is a nice, theme-consistent color
 
+	# Draw the NetworkX graph
 	nx.draw_shell(attendance,
 		node_size = 100,
 		font_size = 2, 
@@ -218,8 +231,11 @@ def generate_graph(lecture):
 		labels = names, 
 		with_labels = True)
 	try:
+		# Save the image in a pseudofile in memory
 		plt.savefig(g, format='png', dpi=500)
+		# Save the image in the media directory so Django can find it
 		lecture.lecture_graph.save(lecture.lecture_title_slug, ContentFile(g.getvalue()))
+		# Clean up objects
 		attendance.clear()
 		plt.clf()
 	finally:
